@@ -1,0 +1,16 @@
+/*Write your answer here and click RUN on top*/
+
+# question from https://www.machinelearningplus.com/sql/sql-window-functions-exercises/
+
+
+-- solution 1 -> incorrect, I couldn't use lag function because the default value has to be a constant integer and not a subquery
+# select * ,
+# lag(qty,1, 0 )
+# over() as cumQty
+# from demand2
+
+-- solution 2
+# SELECT day, 
+#        qty,
+#        SUM(qty) OVER(ORDER BY day) as cumQty 
+# FROM demand2;
