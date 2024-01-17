@@ -1,0 +1,14 @@
+
+select user_id, spend, transaction_date from (
+SELECT * ,
+RANK() OVER(PARTITION BY user_id order by transaction_date) as txn_rank
+FROM transactions
+
+) as mytemp where txn_rank = 3
+
+;
+
+-- PARTITION BY user id t form window od users
+-- use RANK()
+
+-- select * from transactions
