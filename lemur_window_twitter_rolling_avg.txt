@@ -1,0 +1,14 @@
+-- A rolling average, also known as a moving average or running mean is a time-series technique 
+-- that examines trends in data over a specified period of time. Useful
+-- for calculating average costs over a window (period) 
+-- Such as icecream sales in each quarter (window or period here is 
+-- 4 months)
+SELECT * ,
+-- SUM(tweet_count) OVER(PARTITION BY user_id) / 3 as rolling_avg_3d,
+Lag(tweet_count, 2,0) OVER(PARTITION BY user_id ORDER BY tweet_date)
++ 
+Lag(tweet_count, 1,0) OVER(PARTITION BY user_id ORDER BY tweet_date)
++ 
+tweet_count
+as rolling_avg_3d
+FROM tweets;
