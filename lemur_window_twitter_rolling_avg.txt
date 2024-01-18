@@ -3,12 +3,19 @@
 -- for calculating average costs over a window (period) 
 -- Such as icecream sales in each quarter (window or period here is 
 -- 4 months)
-SELECT * ,
--- SUM(tweet_count) OVER(PARTITION BY user_id) / 3 as rolling_avg_3d,
-Lag(tweet_count, 2,0) OVER(PARTITION BY user_id ORDER BY tweet_date)
-+ 
-Lag(tweet_count, 1,0) OVER(PARTITION BY user_id ORDER BY tweet_date)
-+ 
-tweet_count
-as rolling_avg_3d
-FROM tweets;
+
+-- SELECT * ,
+-- for calculating preceeding rows
+-- Lag(tweet_count, 2,0) OVER(PARTITION BY user_id ORDER BY tweet_date)
+-- + Lag(tweet_count, 1,0) OVER(PARTITION BY user_id ORDER BY tweet_date)
+-- + tweet_count
+-- + 0.0
+-- as rolling_avg_3d
+-- FROM tweets;
+
+select  *,
+ROUND(
+AVG(tweet_count) over(PARTITION BY user_id ORDER BY tweet_date) 
+, 2)
+as rolling_3d_avg
+from tweets;
