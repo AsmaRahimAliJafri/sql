@@ -17,9 +17,5 @@ select  *,
 ROUND(
 AVG(tweet_count) over(PARTITION BY user_id ORDER BY tweet_date) 
 , 2)
-as rolling_avg,
-LAG(tweet_count, 1, 0) over(PARTITION BY user_id ORDER BY tweet_date) 
-as prev_count
+as rolling_3d_avg
 from tweets;
-
--- RESULTS IN ERROR
