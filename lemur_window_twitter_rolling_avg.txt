@@ -13,7 +13,7 @@
 -- as rolling_avg_3d
 -- FROM tweets;
 
-select  *,
+select  user_id, tweet_date,
 ROUND(
 AVG(tweet_count) 
 over(PARTITION BY user_id 
