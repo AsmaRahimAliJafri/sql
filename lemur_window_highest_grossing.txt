@@ -1,0 +1,9 @@
+-- only for products in 2022
+-- gross /sum  same products
+-- rank products by sum in each category
+
+-- SELECT *,
+-- SUM(spend) OVER(PARTITION BY category,  product) as rank_by_product
+-- FROM product_spend;
+
+select * from product_spend where EXTRACT(YEAR from transaction_date) = '2022'
