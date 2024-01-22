@@ -6,13 +6,36 @@
 -- SUM(spend) OVER(PARTITION BY category,  product) as rank_by_product
 -- FROM product_spend;
 
-select
- *
-from (
-select *,
-SUM(spend) OVER(PARTITION BY category, product) as total_spend
-from (
-select * from product_spend 
-where EXTRACT(YEAR from transaction_date) = '2022') as tab_2022_products)
-as end_result
+-- select
+-- *,
+-- RANK(total_spend) over(PARTITION BY category) as overall_rank
+-- from (
+-- select *,
+-- SUM(spend) OVER(PARTITION BY category, product) as total_spend
+-- from (
+-- select * from product_spend 
+-- where EXTRACT(YEAR from transaction_date) = '2022') as tab_2022_products)
+-- as end_result GROUP BY category
 
+ WITH RankedProducts AS (
+  SELECT
+    category,
+    product,
+    spend,
+    RANK()
+    OVER (PARTITION BY category ORDER BY spend DESC) 
+    AS product_rank
+  FROM
+    product_spend
+  WHERE
+    EXTRACT(YEAR FROM transaction_date) = 2022
+)
+
+SELECT
+  category,
+  product,
+  spend AS total_spend
+FROM
+  RankedProducts
+WHERE
+  product_rank <= 2
