@@ -34,8 +34,9 @@
 SELECT
   category,
   product,
-  spend AS total_spend
+  SUM(spend) AS total_spend
 FROM
   RankedProducts
 WHERE
   product_rank <= 2
+  GROUP BY category, product
