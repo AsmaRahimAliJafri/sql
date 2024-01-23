@@ -1,0 +1,10 @@
+-- to find aartisis
+-- count the no of times rank was <=10 (meaning the artist was in top
+-- 10)
+
+
+SELECT * FROM global_song_rank where song_id=14525;
+-- SELECT song_id, count(*) FROM global_song_rank where rank <=10 
+-- GROUP BY song_id order by count(*) desc;
+
+-- check for 12636, 14525-4, 13997-4 
