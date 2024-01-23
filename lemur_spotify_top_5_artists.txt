@@ -1,44 +1,16 @@
--- most frequent songs in top 10
--- SELECT * FROM global_song_rank where song_id=14525;
--- SELECT song_id, count(*) as topped_count FROM global_song_rank where rank <=10 
--- GROUP BY song_id order by count(*) desc;
 
+select * from (
+SELECT 
+artists.artist_id, artists.artist_name, 
+songs.song_id, songs.name, 
+global_song_rank.rank, global_song_rank.day,
+RANK() OVER(order by rank) as artist_rank
+FROM artists
+INNER JOIN songs
+  ON artists.artist_id = songs.artist_id
+INNER JOIN global_song_rank
+  ON songs.song_id = global_song_rank.song_id
+WHERE global_song_rank.rank <= 10
+) as temp 
+where artist_rank <=5
 
---  Display the top 5 artist names in ascending order, 
--- along with their song appearance ranking
-select aa.artist_name, ff.ranking from artists aa
-inner join (
-select *, 
-RANK() OVER(order by topped_count desc) as ranking
-from songs s
-inner join (
-SELECT song_id, count(*) as topped_count FROM global_song_rank where rank <=10 
-GROUP BY song_id 
-) as topped
-on s.song_id = topped.song_id
-ORDER BY topped.topped_count desc
-) as ff
-on ff.artist_id = aa.artist_id 
-order by ff.ranking asc
-LIMIT 5
-;
-
-
--- my output
--- artist_name	ranking
--- Drake	1
--- Taylor Swift	1
--- Bad Bunny	3
--- Ed Sheeran	3
--- Bad Bunny	3
-
-
--- expected output
--- artist_name	artist_rank
--- Taylor Swift	1
--- Bad Bunny	2
--- Drake	2
--- Ed Sheeran	3
--- Adele	3
--- Lady Gaga	4
--- Katy Perry	5
